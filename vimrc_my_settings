@@ -1,0 +1,179 @@
+" Comments begin with " (double quotes)
+autocmd VimEnter * call WigHelp()
+
+function WigHelp()
+	echo "
+		\	EasyMotion \n
+		\		\\\\<Motion> - e.g. \\\\w to select by w word motion\n
+		\		help easymotion \n
+		\	Multi-Cursor\n
+		\		<Ctrl>-n - Select next\n
+		\		<Ctrl>-x - Unselect current, select next\n
+		\		<Ctrl>-p - Unselect current, select previous\n
+		\		help multiple-cursors \n
+		\"
+endfunction
+
+colorscheme torte
+
+" Predefined functions
+"set diffexpr=MyDiff()
+set diffexpr=
+function MyDiff()
+  let opt = ''
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  silent execute '!"C:\Program Files (x86)\Vim\vim73\diff" -a ' . opt . v:fname_in . ' ' . v:fname_new . ' > ' . v:fname_out
+endfunction
+
+set nocompatible   " Don't bother with VI compatibility
+set backspace=indent,eol,start   " Make backspace work correctly
+filetype plugin indent on   " required!
+
+" Good for development
+syntax on   " turn on syntax highlighting based on file extension, replacing your color scheme with Vim defaults
+syntax enable   " Turn on syntax hightlighting as above, but preserve your color scheme
+"set textwidth=79
+set autoindent " Continue indent depth from previous like
+set shiftwidth=4 "Size of indent using > or <
+set softtabstop=4 " tab size for autoindent and <Tab> key
+set tabstop=4 " Actual TAB char will look like this
+
+" Good ones
+set ignorecase " Ignore case when searching
+set number "Show line numbers
+set nowrap " Don't wrap text displayed - doesn't affect buffer, just display
+"set expandtab " use spaces instead of tabs (To insert a tab, hit <CTRL-V><Tab>)
+               " see also retab - replaces tabs with whitespace defined as tab
+
+" Make <Space> & <Shift><Space> behave like 'less' and 'more'
+nmap <Space> <C-f>
+nmap <S-Space> <C-b>
+vmap <Space> <C-f>
+vmap <S-Space> <C-b>
+
+" Some Windows like behaviors
+" Have the <Tab> key move to the next buffer
+" nmap <Tab> :wincmd w<CR> Use C-w C-w or n C-w C-w
+" nmap <S-Tab> :wincmd W<CR>
+
+" Forget this, powershell sucks.
+"Set the shell
+"if has("win32") || has("win16")
+"    set shell=powershell.exe "for windows 7+
+"else
+"    /bin/csh   " or whatevs
+"endif
+
+set cursorline   " Highlight the current line
+set cursorcolumn   " Hightlight the current column
+
+syntax enable   "Turn on syntax highlighting
+set ruler   "Show the ruler
+set guifont=Consolas:h9:cANSI   "Set the font
+set hlsearch   " Highlight the searched term
+set incsearch   " Instant search results; show result before hitting <Enter>
+set helplang=En   " Set default help language. Probably not really needed.
+set backup   " Make sure to create a backup file suffixed with "~"
+set lines=40   " set height of window
+set columns=120   " set width of window
+inoremap jj <Esc>hh   " Set jj to simulate pressing <Esc>. Easier for typing
+set hidden
+
+"runtime macros/matchit.vim
+function! SetupFolding(folddepth)
+	set foldmethod=indent
+	" This doesn't work as expected. I want to start at the outside and work
+	" in. This starts at the deepest and only makes n folds, leaving too much
+	" open.
+	let &foldcolumn=a:folddepth + 1
+	" let &foldnestmax=a:folddepth
+	" Open up 3 levels deep of folds
+	set foldlevel=3
+endfunction
+
+function! DoPrettyXML()
+  " save the filetype so we can restore it later
+  let l:origft = &ft
+  set ft=
+  " delete the xml header if it exists. This will
+  " permit us to surround the document with fake tags
+  " without creating invalid xml.
+  1s/<?xml .*?>//e
+  " insert fake tags around the entire document.
+  " This will permit us to pretty-format excerpts of
+  " XML that may contain multiple top-level elements.
+  0put ='<PrettyXML>'
+  $put ='</PrettyXML>'
+  silent %!xmllint --format -
+  " xmllint will insert an <?xml?> header. it's easy enough to delete
+  " if you don't want it.
+  " delete the fake tags
+  2d
+  $d
+  " restore the 'normal' indentation, which is one extra level
+  " too deep due to the extra tags we wrapped around the document.
+  "silent %<
+  %s/^  // 
+  " back to home
+  1
+  " restore the filetype
+  exe "set ft=" . l:origft
+  set syn=xml
+  call SetupFolding(6)
+endfunction
+command! Pxml call DoPrettyXML()
+function! PrettyCss()
+	call CssPretty()
+	set syn=css
+	call SetupFolding(5)
+endfunction
+command! Pcss call PrettyCss()
+function! PrettyHtml()
+	:%!tidy -q -i --indent-spaces 4 --show-warnings 0 --escape-cdata yes --indent-cdata yes
+	set filetype=html
+	set syn=html
+	call SetupFolding(6)
+	"MatchDebug
+endfunction
+command! Phtm call PrettyHtml()
+function PrettyJson()
+	:%!python -m json.tool
+	set syn=json
+	call SetupFolding(5)
+endfunction
+command! Pjson call PrettyJson()
+
+function! CopyCurrentLineToNewBuffer()
+	normal yy
+	execute 'ene'
+	normal p
+	1d
+endfunction
+function! FoldRequest()
+
+endfunction
+function! FormatServiceResponseAndRequest()
+	call CopyCurrentLineToNewBuffer()
+	execute 's/^.\{-}\[\(<soap.\{-}[<\a*:ServiceName>]\{0,1}\(.\{-}\)[<\/\a*:ServiceName>]\{0,1}.\{-}\)\].\{-}\[\(.\{-}\)\].*$/<!-- REQUEST: \2 -->\3<!-- RESPONSE: \2 -->\1/'
+	call DoPrettyXML()
+	1d
+	set nomod
+endfunction
+function! FormatServiceResponse()
+	call CopyCurrentLineToNewBuffer()
+	execute 's/^.\{-}\[\(<soap.\{-}[<\a*:ServiceName>]\{0,1}\(.\{-}\)[<\/\a*:ServiceName>]\{0,1}.\{-}\)\].\{-}\[\(.\{-}\)\].*$/<!-- RESPONSE: \2 -->\1/'
+	call DoPrettyXML()
+	1d
+	set nomod
+endfunction
+function! FormatServiceRequest()
+	call CopyCurrentLineToNewBuffer()
+	execute 's/^.\{-}\[\(<soap.\{-}[<\a*:ServiceName>]\{0,1}\(.\{-}\)[<\/\a*:ServiceName>]\{0,1}.\{-}\)\].\{-}\[\(.\{-}\)\].*$/<!-- REQUEST: \2 -->\3/'
+	call DoPrettyXML()
+	1d
+	set nomod
+endfunction
+command! Svc1RespAndReq call FormatServiceResponseAndRequest()
+command! Svc2Resp call FormatServiceResponse()
+command! Svc3Req call FormatServiceRequest()
