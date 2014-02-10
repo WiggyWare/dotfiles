@@ -11,6 +11,9 @@ function WigHelp()
 		\		<Ctrl>-x - Unselect current, select next\n
 		\		<Ctrl>-p - Unselect current, select previous\n
 		\		help multiple-cursors \n
+		\	Vim Wiki \n
+		\		\\ww to open wiki for editing/viewing \n
+		\		help vimwiki \n
 		\"
 endfunction
 
