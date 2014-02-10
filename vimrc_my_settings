@@ -13,6 +13,8 @@ function WigHelp()
 		\		help multiple-cursors \n
 		\	Vim Wiki \n
 		\		\\ww to open wiki for editing/viewing \n
+		\		\\w\\w to open / create today's diary \n
+		\		\\wi to open generic diary \n
 		\		help vimwiki \n
 		\"
 endfunction
