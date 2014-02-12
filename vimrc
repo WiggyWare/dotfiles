@@ -22,6 +22,7 @@ Bundle 'tpope/vim-rails.git'
 "https://github.com/terryma/vim-multiple-cursors#quick-start
 Bundle 'terryma/vim-multiple-cursors' 
 Bundle 'vimwiki/vimwiki'
+Bundle 'msanders/snipmate.vim'
 " vim-scripts repos
 Bundle 'L9'
 Bundle 'FuzzyFinder'
