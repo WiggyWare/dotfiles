@@ -23,6 +23,8 @@ Bundle 'tpope/vim-rails.git'
 Bundle 'terryma/vim-multiple-cursors' 
 Bundle 'vimwiki/vimwiki'
 Bundle 'msanders/snipmate.vim'
+Bundle 'vim-scripts/matchit.zip'
+Bundle 'scrooloose/nerdtree'
 " vim-scripts repos
 Bundle 'L9'
 Bundle 'FuzzyFinder'
