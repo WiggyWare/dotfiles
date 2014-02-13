@@ -60,6 +60,8 @@ function prompt {
 }
 #prompt
 
+#PROMPT="%B%n%b@%S%m%s [%h-%?] %~
+#%{$fg[red]%}%T %% "
 set -o vi
 
 alias ls="ls -la"
