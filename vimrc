@@ -15,6 +15,9 @@ Bundle 'gmarik/vundle'
 " My bundles here:
 "
 " original repos on GitHub
+Bundle 'scrooloose/nerdcommenter'
+"Bundle 'wincent/Command-T'
+Bundle 'mhinz/vim-startify'
 Bundle 'scrooloose/syntastic.git'
 Bundle 'tpope/vim-fugitive'
 Bundle 'Lokaltog/vim-easymotion'
@@ -29,8 +32,6 @@ Bundle 'scrooloose/nerdtree'
 " vim-scripts repos
 Bundle 'L9'
 Bundle 'FuzzyFinder'
-" non-GitHub repos
-Bundle 'git://git.wincent.com/command-t.git'
 " Git repos on your local machine (i.e. when working on your own plugin)
 " ...
 

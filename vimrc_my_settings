@@ -1,5 +1,80 @@
 " Comments begin with " (double quotes)
-autocmd VimEnter * call WigHelp()
+" windows needs this for symlinks. otherwise, the backup is 
+" what the symlink actually points to.
+set nobackup
+set nowritebackup
+
+"autocmd VimEnter * call WigHelp()
+	" get nerdtree & startify working together
+	"autocmd VimEnter *
+				"\ if !argc() |
+				"\   Startify |
+				"\   NERDTree |
+				"\   execute "normal \<c-w>w" |
+				"\ endif
+
+autocmd VimEnter * call StartScreen()
+
+function StartScreen()
+    let g:startify_files_number        = 8
+    let g:startify_session_persistence = 1
+    let g:startify_session_autoload    = 1
+    let g:startify_enable_special      = 1
+	let g:startify_change_to_dir       = 1
+
+	" First items in list are wiki, todo & diary, so use mnemonics for them
+    let g:startify_custom_indices = [ 'w' , 'd' , 'p' , 'g' ]
+
+	let g:startify_bookmarks = [
+			\ '~/vimwiki/index.wiki',
+			\ '~/vimwiki/diary/diary.wiki',
+			\ '~/vimwiki/Vim Tips.wiki',
+			\ '/data/vim/golfing',
+			\ ]
+
+    let g:startify_list_order = [
+			\ ['   Bookmarks:'],
+			\ 'bookmarks',
+			\ ['   LRU:'],
+			\ 'files',
+			\ ['   Sessions:'],
+			\ 'sessions',
+			\ ]
+
+    let g:startify_skiplist = [
+                \ 'COMMIT_EDITMSG',
+                \ $VIMRUNTIME .'/doc',
+                \ 'bundle/.*/doc',
+                \ '.vimgolf',
+                \ ]
+
+    let g:startify_custom_header =
+		\ ['' ,
+		\ '	EasyMotion ' ,
+		\ '		\\<Motion> - e.g. \\w to select by w word motion' ,
+		\ '		help easymotion ' ,
+		\ '	Multi-Cursor' ,
+		\ '		<Ctrl>-n - Select next' ,
+		\ '		<Ctrl>-x - Unselect current, select next' ,
+		\ '		<Ctrl>-p - Unselect current, select previous' ,
+		\ '		help multiple-cursors ' ,
+		\ '	Vim Wiki ' ,
+		\ '		\ww to open wiki for editing/viewing ' ,
+		\ '		\w\w to open / create todays diary ' ,
+		\ '		\\wi to open generic diary ' ,
+		\ '		help vimwiki ' ,
+		\ '']
+
+    hi StartifyBracket ctermfg=240
+    hi StartifyNumber  ctermfg=215
+    hi StartifyPath    ctermfg=245
+    hi StartifySlash   ctermfg=240
+    hi StartifySpecial ctermfg=240
+    hi StartifyHeader  ctermfg=114
+    hi StartifyFooter  ctermfg=240
+    "hi StartifyFile    ctermfg=111
+
+endfunction
 
 function WigHelp()
 	echo "
