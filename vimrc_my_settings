@@ -257,3 +257,6 @@ endfunction
 command! Svc1RespAndReq call FormatServiceResponseAndRequest()
 command! Svc2Resp call FormatServiceResponse()
 command! Svc3Req call FormatServiceRequest()
+
+" Make VIM use the autocompleter provided by Eclipse through eclim
+let g:EclimCompletionMethod = 'omnifunc'

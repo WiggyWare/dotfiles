@@ -25,7 +25,7 @@ ZSH_THEME="clean"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git)
+#plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -68,7 +68,8 @@ export AS_HOST=$HOSTNAME
 
 source ~/.zsh_common
 
-
+alias reset='reset;echo -e "\033c"'
+alias tree='tree --charset=ASCII'
 
 #THIS MUST BE AT THE END OF THE FILE FOR GVM TO WORK!!!
 [[ -s "/Users/Wiggy/.gvm/bin/gvm-init.sh" ]] && source "/Users/Wiggy/.gvm/bin/gvm-init.sh"

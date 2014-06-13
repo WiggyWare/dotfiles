@@ -15,6 +15,7 @@ Bundle 'gmarik/vundle'
 " My bundles here:
 "
 " original repos on GitHub
+"Bundle 'Valloric/YouCompleteMe.git'
 Bundle 'scrooloose/nerdcommenter'
 "Bundle 'wincent/Command-T'
 Bundle 'mhinz/vim-startify'

@@ -64,7 +64,9 @@ function prompt {
 #%{$fg[red]%}%T %% "
 set -o vi
 
-alias ls="ls -la"
-
 export GREP_OPTIONS="--color=auto"
 #export GREP_COLORS=
+
+alias ls="ls -la"
+alias du="du -Bk"
+
